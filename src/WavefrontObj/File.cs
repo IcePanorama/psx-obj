@@ -41,7 +41,8 @@ namespace WavefrontObj
                         setObjName(subs[1]);
                         continue;
                     case "v":
-                        goto default;
+                        Vertex v = new Vertex(subs[1], subs[2], subs[3]);
+                        return;
                     default:
                         break;
                 }
