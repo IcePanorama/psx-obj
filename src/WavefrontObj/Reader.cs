@@ -26,7 +26,7 @@ class WavefrontObj
                                     + "is not supported!");
                         objName = subs[1];
                         Console.WriteLine("Object name: " + objName);
-                        break;
+                        continue;
                     default:
                         break;
                 }
