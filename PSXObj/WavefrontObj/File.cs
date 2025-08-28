@@ -55,19 +55,19 @@ namespace WavefrontObj
                 switch (subs[0])
                 {
                     case "#":
-                        continue; // skip comments
+                        break; // skip comments
                     case "f":
                         if (subs.Length < 4)
                             throw new MalformedLineException(l);
 
                         processFaces(subs[1], subs[2], subs[3]);
-                        continue;
+                        break;
                     case "o":
                         if (subs.Length < 2)
                             throw new MalformedLineException(l);
 
                         setObjName(subs[1]);
-                        continue;
+                        break;
                     case "s":
                         if (subs.Length < 2)
                             throw new MalformedLineException(l);
@@ -75,19 +75,19 @@ namespace WavefrontObj
                         Console.WriteLine(
                                 "WARNING: ignoring smooth shading element "
                                 + "of value: " + subs[1]);
-                        continue;
+                        break;
                     case "v":
                         if (subs.Length < 4)
                             throw new MalformedLineException(l);
 
                         verts.Add(new Vertex(subs[1], subs[2], subs[3]));
-                        continue;
-                    default:
                         break;
+                    default:
+                        throw new
+                            NotImplementedException(
+                                "Support for elements of type " + subs[0]
+                                + " is not currently implemented.");
                 }
-
-                Console.WriteLine(l);
-                break;
             }
         }
     }
