@@ -10,8 +10,8 @@ namespace WavefrontObj
         public Vertex(string x, string y, string z)
         {
             coords[0] = new Q3_12(float.Parse(x));
-            coords[0] = new Q3_12(float.Parse(y));
-            coords[0] = new Q3_12(float.Parse(z));
+            coords[1] = new Q3_12(float.Parse(y));
+            coords[2] = new Q3_12(float.Parse(z));
         }
     }
 }

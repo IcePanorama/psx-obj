@@ -8,6 +8,7 @@ namespace PSXObj.Tests
         [Theory]
         [InlineData(0.0f, 0.0f, 0.0f)]
         [InlineData(0.216921f, -0.572847f, 0.159694f)]
+        [InlineData(-8.0f, -1.0f, 7.999755859375f)]
         void Q3_12_ValidFloatsAreConvertedIntoVertices(
                 float x,
                 float y,

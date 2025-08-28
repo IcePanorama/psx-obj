@@ -9,6 +9,7 @@ namespace WavefrontObj
         string filePath;
         string? objName = null;
         List<Vertex> verts = new List<Vertex>();
+        List<Face> tris = new List<Face>();
 
         public WavefrontObjFile(string path)
         {
@@ -32,6 +33,19 @@ namespace WavefrontObj
             Console.WriteLine("Object name: " + objName);
         }
 
+        void processFaces(string v0, string v1, string v2)
+        {
+            int[] vals =
+                { int.Parse(v0) - 1, int.Parse(v1) - 1, int.Parse(v2) - 1 };
+            foreach (int v in vals)
+            {
+                if ((v < 0) || (verts.Count < v))
+                    throw new
+                        ApplicationException("Invalid vertex index: " + v);
+            }
+            tris.Add(new Face(verts[vals[0]], verts[vals[1]], verts[vals[2]]));
+        }
+
         void ProcessFile(StreamReader sr)
         {
             string? l;
@@ -42,6 +56,9 @@ namespace WavefrontObj
                 {
                     case "#":
                         continue; // skip comments
+                    case "f":
+                        processFaces(subs[1], subs[2], subs[3]);
+                        continue;
                     case "o":
                         setObjName(subs[1]);
                         continue;
