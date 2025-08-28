@@ -1,0 +1,25 @@
+using WavefrontObj;
+
+namespace PSXObj.Tests
+{
+    public class VertexTests
+    {
+        /// Not testing invalid floats as that's coverted by Q3_12Tests
+        [Theory]
+        [InlineData(0.0f, 0.0f, 0.0f)]
+        [InlineData(0.216921f, -0.572847f, 0.159694f)]
+        void Q3_12_ValidFloatsAreConvertedIntoVertices(
+                float x,
+                float y,
+                float z)
+        {
+            Vertex v = new
+                Vertex(Convert.ToString(x), Convert.ToString(y),
+                       Convert.ToString(z));
+
+            Assert.Equal((new Q3_12(x)).value, v.x.value);
+            Assert.Equal((new Q3_12(y)).value, v.y.value);
+            Assert.Equal((new Q3_12(z)).value, v.z.value);
+        }
+    }
+}
