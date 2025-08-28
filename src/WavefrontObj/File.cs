@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+
 namespace WavefrontObj
 {
     class WavefrontObjFile
@@ -36,7 +39,7 @@ namespace WavefrontObj
                 switch (subs[0])
                 {
                     case "#":
-                        continue;
+                        continue; // skip comments
                     case "o":
                         setObjName(subs[1]);
                         continue;
