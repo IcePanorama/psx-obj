@@ -1,6 +1,6 @@
 namespace WavefrontObj
 {
-    class Vertex
+    public class Vertex
     {
         public Q3_12[] coords { get; private set; } = new Q3_12[3];
         public Q3_12 x => coords[0];

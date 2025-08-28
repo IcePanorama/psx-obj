@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace WavefrontObj
 {
@@ -7,6 +8,7 @@ namespace WavefrontObj
     {
         string filePath;
         string? objName = null;
+        List<Vertex> verts = new List<Vertex>();
 
         public WavefrontObjFile(string path)
         {
@@ -43,9 +45,14 @@ namespace WavefrontObj
                     case "o":
                         setObjName(subs[1]);
                         continue;
+                    case "s":
+                        Console.WriteLine(
+                                "WARNING: ignoring smooth shading element "
+                                + "of value: " + subs[1]);
+                        continue;
                     case "v":
-                        Vertex v = new Vertex(subs[1], subs[2], subs[3]);
-                        return;
+                        verts.Add(new Vertex(subs[1], subs[2], subs[3]));
+                        continue;
                     default:
                         break;
                 }
