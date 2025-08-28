@@ -57,17 +57,29 @@ namespace WavefrontObj
                     case "#":
                         continue; // skip comments
                     case "f":
+                        if (subs.Length < 4)
+                            throw new MalformedLineException(l);
+
                         processFaces(subs[1], subs[2], subs[3]);
                         continue;
                     case "o":
+                        if (subs.Length < 2)
+                            throw new MalformedLineException(l);
+
                         setObjName(subs[1]);
                         continue;
                     case "s":
+                        if (subs.Length < 2)
+                            throw new MalformedLineException(l);
+
                         Console.WriteLine(
                                 "WARNING: ignoring smooth shading element "
                                 + "of value: " + subs[1]);
                         continue;
                     case "v":
+                        if (subs.Length < 4)
+                            throw new MalformedLineException(l);
+
                         verts.Add(new Vertex(subs[1], subs[2], subs[3]));
                         continue;
                     default:
@@ -77,6 +89,14 @@ namespace WavefrontObj
                 Console.WriteLine(l);
                 break;
             }
+        }
+    }
+
+    class MalformedLineException : Exception
+    {
+        public MalformedLineException(string line)
+            : base("Malformed input: " + line)
+        {
         }
     }
 }
