@@ -3,7 +3,7 @@ using System.IO;
 
 namespace WavefrontObj
 {
-    class WavefrontObjFile
+    public class WavefrontObjFile
     {
         string filePath;
         string? objName = null;

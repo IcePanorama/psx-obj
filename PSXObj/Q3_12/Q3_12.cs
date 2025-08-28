@@ -1,9 +1,8 @@
 using System;
-using System.IO;
 
-class Q3_12
+public class Q3_12
 {
-    static readonly int FRACTIONAL_BITS = 12;
+    public static readonly int FRACTIONAL_BITS = 12;
     static readonly int ONE = 1 << FRACTIONAL_BITS;
     static readonly float MIN_SUPPORTED_VALUE = -8.0f;
     static readonly float MAX_SUPPORTED_VALUE = 7.999755859375f;

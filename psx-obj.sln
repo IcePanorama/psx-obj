@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psx-obj", "PSXObj\psx-obj.csproj", "{2622AF88-3BF8-4221-B579-88BE7EAD36FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSXObj.Tests", "PSXObj.Tests\PSXObj.Tests.csproj", "{93BE27D6-10C5-4D95-8F2C-06F5B39FA250}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2622AF88-3BF8-4221-B579-88BE7EAD36FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2622AF88-3BF8-4221-B579-88BE7EAD36FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2622AF88-3BF8-4221-B579-88BE7EAD36FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2622AF88-3BF8-4221-B579-88BE7EAD36FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93BE27D6-10C5-4D95-8F2C-06F5B39FA250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93BE27D6-10C5-4D95-8F2C-06F5B39FA250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93BE27D6-10C5-4D95-8F2C-06F5B39FA250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93BE27D6-10C5-4D95-8F2C-06F5B39FA250}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
