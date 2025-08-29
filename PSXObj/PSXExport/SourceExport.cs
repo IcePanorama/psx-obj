@@ -12,7 +12,8 @@ namespace PSXExport
         /// Format of the exported file. `{0}` should be the filename in all
         /// caps. `{1}` is the number of tris in the 3d model times 3. `{2}` 
         /// should be an initializer lists for SVECTORs. `{3}` should be a list
-        /// of pointers towards vertices in `{0}_VERTS`.
+        /// of pointers towards vertices in `{0}_VERTS`. ANSI-C files must end
+        /// in a new line.
         string fileFmt = """
             /*
              * File generated using PSXObj.
@@ -31,6 +32,7 @@ namespace PSXExport
             const SVECTOR *{0}_TRIS[(_PSXOBJ_{0}_NUM_TRIS_)] = {{
             {3}
             }};
+
             """;
 
         public SourceExport(WavefrontObjFile w) : base(w)
