@@ -66,8 +66,6 @@ namespace PSXExport
             Vertex last = _verts[_verts.Count - 1];
             str +=
                 string.Format(FMT, last.x.value, last.y.value, last.z.value);
-
-            Console.WriteLine(str);
             return str;
         }
     }
