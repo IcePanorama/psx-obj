@@ -37,17 +37,21 @@ namespace PSXExport
 
         public HeaderExport(WavefrontObjFile w) : base(w)
         {
+            if (File.Exists(_filename))
+                File.Delete(_filename);
+
             using (FileStream fs = File.OpenWrite(_filename))
             {
                 string nameCaps =
                     _filename.Substring(0, _filename.LastIndexOf("."))
                         .ToUpper();
                 string vertStr = CreateVertsString();
+                string triStr = CreateTrisStrings(nameCaps);
                 fs.Write(
                     new UTF8Encoding(true)
                     .GetBytes(
                         string.Format(fileFmt, nameCaps, vertStr,
-                            w.verts.Count * 3, "")));
+                            w.verts.Count * 3, triStr)));
             }
         }
 
@@ -64,9 +68,31 @@ namespace PSXExport
             }
 
             Vertex last = _verts[_verts.Count - 1];
-            str +=
+            return str +
                 string.Format(FMT, last.x.value, last.y.value, last.z.value);
-            return str;
+        }
+
+        string CreateTrisStrings(string nameCaps)
+        {
+            const string FMT = "  &{0}, &{1}, &{2}";
+            string VERTS_ARR_NAME =
+                string.Format("{0}_VERTS[{{0}}]", nameCaps);
+            string str = "";
+            for (int i = 0; i < _tris.Count - 1; i++)
+            {
+                Face t = _tris[i];
+                str += string.Format(FMT + ",\n",
+                    string.Format(VERTS_ARR_NAME, t.verts[0]),
+                    string.Format(VERTS_ARR_NAME, t.verts[1]),
+                    string.Format(VERTS_ARR_NAME, t.verts[2]));
+            }
+
+            Face last = _tris[_tris.Count - 1];
+            return str +
+                string.Format(FMT,
+                    string.Format(VERTS_ARR_NAME, last.verts[0]),
+                    string.Format(VERTS_ARR_NAME, last.verts[1]),
+                    string.Format(VERTS_ARR_NAME, last.verts[2]));
         }
     }
 }

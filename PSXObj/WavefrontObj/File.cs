@@ -43,7 +43,8 @@ namespace WavefrontObj
                     throw new
                         ApplicationException("Invalid vertex index: " + v);
             }
-            tris.Add(new Face(verts[vals[0]], verts[vals[1]], verts[vals[2]]));
+
+            tris.Add(new Face(vals[0], vals[1], vals[2]));
         }
 
         void ProcessFile(StreamReader sr)

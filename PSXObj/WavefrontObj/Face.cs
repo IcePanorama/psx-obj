@@ -2,9 +2,9 @@ namespace WavefrontObj
 {
     public class Face
     {
-        public Vertex[] verts { get; private set; } = new Vertex[3];
+        public int[] verts { get; private set; } = new int[3];
 
-        public Face(Vertex v0, Vertex v1, Vertex v2)
+        public Face(int v0, int v1, int v2)
         {
             verts[0] = v0;
             verts[1] = v1;
