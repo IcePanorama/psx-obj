@@ -23,7 +23,7 @@ namespace PSXExport
         {
             int ext = filename.LastIndexOf('.');
             ext = ext != -1 ? ext : filename.Length;
-            return filename.Substring(0, ext) + ".h";
+            return filename.Substring(0, ext);
         }
     }
 }

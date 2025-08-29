@@ -1,6 +1,6 @@
 # Project specific
 *.obj
-*.h
+*.h.in
 
 ## A streamlined .gitignore for modern .NET projects
 ## including temporary files, build results, and

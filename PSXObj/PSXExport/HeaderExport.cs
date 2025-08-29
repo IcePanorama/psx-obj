@@ -37,14 +37,15 @@ namespace PSXExport
 
         public HeaderExport(WavefrontObjFile w) : base(w)
         {
+            _filename += ".h.in";
+
             if (File.Exists(_filename))
                 File.Delete(_filename);
 
             using (FileStream fs = File.OpenWrite(_filename))
             {
                 string nameCaps =
-                    _filename.Substring(0, _filename.LastIndexOf("."))
-                        .ToUpper();
+                    _filename.Substring(0, _filename.Length - 5).ToUpper();
                 string vertStr = CreateVertsString();
                 string triStr = CreateTrisStrings(nameCaps);
                 fs.Write(
@@ -58,6 +59,7 @@ namespace PSXExport
         string CreateVertsString()
         {
             const string FMT = "  {{ {0,6}, {1,6}, {2,6}, 0 }}";
+
             string str = "";
             for (int i = 0; i < _verts.Count - 1; i++)
             {
@@ -77,6 +79,7 @@ namespace PSXExport
             const string FMT = "  &{0}, &{1}, &{2}";
             string VERTS_ARR_NAME =
                 string.Format("{0}_VERTS[{{0}}]", nameCaps);
+
             string str = "";
             for (int i = 0; i < _tris.Count - 1; i++)
             {
