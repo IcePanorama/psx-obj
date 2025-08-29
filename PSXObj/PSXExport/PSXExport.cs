@@ -25,7 +25,7 @@ namespace PSXExport
         string CreateFilename(string filename)
         {
             int ext = filename.LastIndexOf('.');
-            ext = ext != -1 ? Math.Min(ext, 8) : filename.Length;
+            ext = ext != -1 ? Math.Min(ext, 9) : filename.Length;
             return filename.Substring(0, ext).ToUpper();
         }
     }
