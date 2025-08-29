@@ -6,10 +6,10 @@ namespace WavefrontObj
 {
     public class WavefrontObjFile
     {
-        string filePath;
+        public string filePath { get; private set; }
         string? objName = null;
-        List<Vertex> verts = new List<Vertex>();
-        List<Face> tris = new List<Face>();
+        public List<Vertex> verts { get; private set; } = new List<Vertex>();
+        public List<Face> tris { get; private set; } = new List<Face>();
 
         public WavefrontObjFile(string path)
         {

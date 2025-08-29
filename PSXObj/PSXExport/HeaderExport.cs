@@ -1,6 +1,8 @@
 using WavefrontObj;
 using System.Collections.Generic;
+using System.Text;
 using System.IO;
+using System;
 
 namespace PSXExport
 {
@@ -23,21 +25,50 @@ namespace PSXExport
             #ifndef _PSXOBJ_{0}_MODEL_DATA_H_IN_
             #define _PSXOBJ_{0}_MODEL_DATA_H_IN_
 
-            const SVECTOR {0}_VERTS[] = {
-                {1}
-            };
+            const SVECTOR {0}_VERTS[] = {{
+            {1}
+            }};
 
-            const SVECTOR *{0}_TRIS[{2}] = {
-                {3}
-            };
+            const SVECTOR *{0}_TRIS[{2}] = {{
+            {3}
+            }};
             #endif /* _PSXOBJ_{0}_MODEL_DATA_H_IN_ */
             """;
 
-        HeaderExport(string filename, List<Face> tris) : base(filename, tris)
+        public HeaderExport(WavefrontObjFile w) : base(w)
         {
-            using (FileStream sw = File.OpenWrite(_filename))
+            using (FileStream fs = File.OpenWrite(_filename))
             {
+                string nameCaps =
+                    _filename.Substring(0, _filename.LastIndexOf("."))
+                        .ToUpper();
+                string vertStr = CreateVertsString();
+                fs.Write(
+                    new UTF8Encoding(true)
+                    .GetBytes(
+                        string.Format(fileFmt, nameCaps, vertStr,
+                            w.verts.Count * 3, "")));
             }
+        }
+
+        string CreateVertsString()
+        {
+            const string FMT = "  {{ {0,6}, {1,6}, {2,6}, 0 }}";
+            string str = "";
+            for (int i = 0; i < _verts.Count - 1; i++)
+            {
+                Vertex v = _verts[i];
+                str +=
+                    string.Format(FMT + ",\n", v.x.value, v.y.value,
+                        v.z.value);
+            }
+
+            Vertex last = _verts[_verts.Count - 1];
+            str +=
+                string.Format(FMT, last.x.value, last.y.value, last.z.value);
+
+            Console.WriteLine(str);
+            return str;
         }
     }
 }

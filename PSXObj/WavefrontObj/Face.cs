@@ -1,6 +1,6 @@
 namespace WavefrontObj
 {
-    class Face
+    public class Face
     {
         public Vertex[] verts { get; private set; } = new Vertex[3];
 
