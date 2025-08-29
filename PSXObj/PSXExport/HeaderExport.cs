@@ -1,8 +1,6 @@
 using WavefrontObj;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System;
 
 namespace PSXExport
 {
@@ -12,10 +10,9 @@ namespace PSXExport
     class HeaderExport : PSXExport
     {
         /// Format of the exported file. `{0}` should be the filename in all
-        /// caps. `{1}` should be lists of four numbers (in the range of
-        /// `int16_t`), where the 4th number is always zero. `{2}` is the
-        /// number of tris in the 3d model times 3. `{3}` should be a list of 
-        /// pointers towards vertices in `{0}_VERTS`.
+        /// caps. `{1}` should be an initializer lists for SVECTORs. `{2}` is 
+        /// the number of tris in the 3d model times 3. `{3}` should be a list 
+        /// of pointers towards vertices in `{0}_VERTS`.
         string fileFmt = """
             /*
              * File generated using PSXObj.
