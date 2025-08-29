@@ -19,11 +19,14 @@ namespace PSXExport
             _tris = w.tris;
         }
 
+        /// Creates a MS-DOS/8.3 compliant filename from the given filename.
+        /// This base class does not add an extension, leaving that up to
+        /// subclasses.
         string CreateFilename(string filename)
         {
             int ext = filename.LastIndexOf('.');
-            ext = ext != -1 ? ext : filename.Length;
-            return filename.Substring(0, ext);
+            ext = ext != -1 ? Math.Min(ext, 8) : filename.Length;
+            return filename.Substring(0, ext).ToUpper();
         }
     }
 }
