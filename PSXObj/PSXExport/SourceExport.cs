@@ -32,7 +32,6 @@ namespace PSXExport
             const SVECTOR *{0}_TRIS[(_PSXOBJ_{0}_NUM_TRIS_)] = {{
             {3}
             }};
-
             """;
 
         public SourceExport(WavefrontObjFile w) : base(w)
@@ -53,6 +52,7 @@ namespace PSXExport
                     .GetBytes(
                         string.Format(fileFmt, nameCaps, w.tris.Count * 3,
                             vertStr, triStr)));
+                fs.Write(new UTF8Encoding(true).GetBytes("\r\n"));
             }
         }
 
