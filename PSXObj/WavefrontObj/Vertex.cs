@@ -13,5 +13,10 @@ namespace WavefrontObj
             coords[1] = new Q3_12(float.Parse(y));
             coords[2] = new Q3_12(float.Parse(z));
         }
+
+        public override string ToString()
+        {
+            return "(" + x + ", " + y + ", " + z + ")";
+        }
     }
 }

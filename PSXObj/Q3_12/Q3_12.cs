@@ -9,6 +9,11 @@ public class Q3_12
 
     public short value { get; private set; } = 0;
 
+    Q3_12(short v)
+    {
+        value = v;
+    }
+
     /// A signed, fixed point (Q3.12) decimal numeral. Has a valid range of -8
     /// to 7.999755859375. Not doing any rounding, just cause.
     public Q3_12(float f)
@@ -22,4 +27,20 @@ public class Q3_12
         value = (short)(f * ONE);
         Console.WriteLine(string.Format("Before: {0}, after: {1}", f, value));
     }
+
+    public override string ToString()
+    {
+        return value.ToString();
+    }
+
+    public static bool operator <(Q3_12 l, Q3_12 r) => l.value < r.value;
+    public static bool operator <(Q3_12 l, int r) => l.value < r;
+    public static bool operator >(Q3_12 l, Q3_12 r) => l.value > r.value;
+    public static bool operator >(Q3_12 l, int r) => l.value > r;
+    public static Q3_12 operator -(Q3_12 op) => new Q3_12((short)(-op.value));
+    public static Q3_12 operator +(Q3_12 l, Q3_12 r)
+        => new Q3_12((short)(l.value - r.value));
+    public static Q3_12 operator -(Q3_12 l, Q3_12 r) => l + (-r);
+    public static Q3_12 operator *(Q3_12 l, Q3_12 r)
+        => new Q3_12((short)(l.value * r.value));
 }

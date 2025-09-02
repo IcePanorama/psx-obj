@@ -35,13 +35,63 @@ namespace WavefrontObj
 
         void processFaces(string v0, string v1, string v2)
         {
+            void Swap<T>(ref T x, ref T y)
+            {
+                T tmp = x;
+                x = y;
+                y = tmp;
+            }
+
+            int FindIdxOfTopLeftMostPt(Vertex[] v)
+            {
+                int topLeftIdx = 0;
+                for (int i = 1; i < 3; i++)
+                {
+                    Vertex curr = v[topLeftIdx];
+                    Vertex newest = v[i];
+                    if (newest.y < curr.y)
+                        topLeftIdx = i;
+                    else if ((newest.y == curr.y) && (newest.x < curr.x))
+                        topLeftIdx = i;
+                }
+                return topLeftIdx;
+            }
+
+            int[] RotateArray(int[] arr, int i)
+            {
+                int[] res = new int[3];
+                Array.Copy(arr, i, res, 0, 3 - i);
+                Array.Copy(arr, 0, res, 3 - i, i);
+                return res;
+            }
+
             int[] vals =
                 { int.Parse(v0) - 1, int.Parse(v1) - 1, int.Parse(v2) - 1 };
+
             foreach (int v in vals)
             {
                 if ((v < 0) || (verts.Count < v))
                     throw new
                         ApplicationException("Invalid vertex index: " + v);
+            }
+
+            Vertex a = verts[vals[0]];
+            Vertex b = verts[vals[1]];
+            Vertex c = verts[vals[2]];
+            bool isClkwise =
+                ((b.x - a.x) * (-c.y * -a.y) - (c.x * a.x) * (-b.y - a.y)) < 0;
+            if (!isClkwise)
+            {
+                Console.WriteLine(
+                    "Vertices aren't in clockwise order: fixing them...");
+
+                Swap<Vertex>(ref a, ref c);
+                Swap<int>(ref vals[0], ref vals[2]);
+
+                Vertex[] v = { a, b, c };
+                int topLeftIdx = FindIdxOfTopLeftMostPt(v);
+
+                vals = RotateArray(vals, topLeftIdx);
             }
 
             tris.Add(new Face(vals[0], vals[1], vals[2]));
