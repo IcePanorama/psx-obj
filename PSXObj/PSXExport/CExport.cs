@@ -101,6 +101,8 @@ namespace PSXExport
             return str + ApplyFmt(_verts[_verts.Count - 1]);
         }
 
+        /// FIXME: With some effort, this could be combined with
+        /// `CreateVertsString`.
         string CreateTrisStrings(string vertArrName)
         {
             string FMT =
