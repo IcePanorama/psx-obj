@@ -9,6 +9,11 @@ public class Q3_12
 
     public short value { get; private set; } = 0;
 
+    public Q3_12(Q3_12 q)
+    {
+        value = q.value;
+    }
+
     Q3_12(short v)
     {
         value = v;
@@ -28,10 +33,9 @@ public class Q3_12
         Console.WriteLine(string.Format("Before: {0}, after: {1}", f, value));
     }
 
-    public override string ToString()
-    {
-        return value.ToString();
-    }
+    public float ToFloat() => value / ONE;
+
+    public override string ToString() => value.ToString();
 
     public static bool operator <(Q3_12 l, Q3_12 r) => l.value < r.value;
     public static bool operator <(Q3_12 l, int r) => l.value < r;

@@ -14,6 +14,13 @@ namespace WavefrontObj
             coords[2] = new Q3_12(float.Parse(z));
         }
 
+        public Vertex(Q3_12 x, Q3_12 y, Q3_12 z)
+        {
+            coords[0] = new Q3_12(x);
+            coords[1] = new Q3_12(y);
+            coords[2] = new Q3_12(z);
+        }
+
         public override string ToString()
         {
             return "(" + x + ", " + y + ", " + z + ")";

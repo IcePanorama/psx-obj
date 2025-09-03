@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace WavefrontObj
 {
@@ -42,29 +43,6 @@ namespace WavefrontObj
                 y = tmp;
             }
 
-            int FindIdxOfTopLeftMostPt(Vertex[] v)
-            {
-                int topLeftIdx = 0;
-                for (int i = 1; i < 3; i++)
-                {
-                    Vertex curr = v[topLeftIdx];
-                    Vertex newest = v[i];
-                    if (newest.y < curr.y)
-                        topLeftIdx = i;
-                    else if ((newest.y == curr.y) && (newest.x < curr.x))
-                        topLeftIdx = i;
-                }
-                return topLeftIdx;
-            }
-
-            int[] RotateArray(int[] arr, int i)
-            {
-                int[] res = new int[3];
-                Array.Copy(arr, i, res, 0, 3 - i);
-                Array.Copy(arr, 0, res, 3 - i, i);
-                return res;
-            }
-
             int[] vals =
                 { int.Parse(v0) - 1, int.Parse(v1) - 1, int.Parse(v2) - 1 };
 
@@ -78,20 +56,21 @@ namespace WavefrontObj
             Vertex a = verts[vals[0]];
             Vertex b = verts[vals[1]];
             Vertex c = verts[vals[2]];
-            bool isClkwise =
-                ((b.x - a.x) * (-c.y * -a.y) - (c.x * a.x) * (-b.y - a.y)) < 0;
+
+            Vector3 ab = new Vector3((b.x - a.x).ToFloat(),
+                (b.y - a.y).ToFloat(), (b.z - a.z).ToFloat());
+            Vector3 ac = new Vector3((c.x - a.x).ToFloat(),
+                (c.y - a.y).ToFloat(), (c.z - a.z).ToFloat());
+            Vector3 n = Vector3.Cross(ab, ac);
+
+            Vector3 viewDir = new Vector3(0, 0, -1);
+            bool isClkwise = Vector3.Dot(n, viewDir) > 0;
             if (!isClkwise)
             {
                 Console.WriteLine(
                     "Vertices aren't in clockwise order: fixing them...");
-
                 Swap<Vertex>(ref a, ref c);
                 Swap<int>(ref vals[0], ref vals[2]);
-
-                Vertex[] v = { a, b, c };
-                int topLeftIdx = FindIdxOfTopLeftMostPt(v);
-
-                vals = RotateArray(vals, topLeftIdx);
             }
 
             tris.Add(new Face(vals[0], vals[1], vals[2]));
