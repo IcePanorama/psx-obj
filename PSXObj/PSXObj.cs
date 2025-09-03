@@ -9,7 +9,7 @@ class PSXObj
         try
         {
             WavefrontObjFile w = new WavefrontObjFile("meatball.obj");
-            SourceExport he = new SourceExport(w);
+            CExport he = new CExport(w);
         }
         catch (Exception e)
         {
