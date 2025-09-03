@@ -57,6 +57,7 @@ namespace WavefrontObj
             Vertex b = verts[vals[1]];
             Vertex c = verts[vals[2]];
 
+            // FIXME: make vertices floats first, then convert to Q3.12 later!
             Vector3 ab = new Vector3((b.x - a.x).ToFloat(),
                 (b.y - a.y).ToFloat(), (b.z - a.z).ToFloat());
             Vector3 ac = new Vector3((c.x - a.x).ToFloat(),
