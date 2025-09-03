@@ -1,6 +1,7 @@
 using WavefrontObj;
 using System.Text;
 using System.IO;
+using System;
 
 namespace PSXExport
 {
@@ -14,7 +15,7 @@ namespace PSXExport
         /// should be an initializer lists for SVECTORs. `{3}` should be a list
         /// of pointers towards vertices in `{0}_VERTS`. ANSI-C files must end
         /// in a new line.
-        string fileFmt = """
+        string srcFileFmt = """
             /*
              * File generated using PSXObj.
              * Homepage: <TODO>
@@ -23,13 +24,17 @@ namespace PSXExport
             // See: https://github.com/IcePanorama/PSXPsyQTemplate
             #include "sfd_gpui.h"
 
-            #define _PSXOBJ_{0}_NUM_TRIS_ ({1})
+            #define _PSXOBJ_{0}_NUM_VERTICES_ ({1})
+            #define _PSXOBJ_{0}_NUM_TRIS_ ((_PSXOBJ_{0}_NUM_VERTICES_) / 3)
 
-            const SVECTOR {0}_VERTS[] = {{
+            const unsigned int {0}_NUM_VERTS = (_PSXOBJ_{0}_NUM_VERTICES_);
+            const unsigned int {0}_NUM_TRIS  = (_PSXOBJ_{0}_NUM_TRIS_);
+
+            SVECTOR {0}_VERTS[] = {{
             {2}
             }};
 
-            const SVECTOR *{0}_TRIS[(_PSXOBJ_{0}_NUM_TRIS_)] = {{
+            SVECTOR *{0}_TRIS[(_PSXOBJ_{0}_NUM_VERTICES_)] = {{
             {3}
             }};
             """;
@@ -50,7 +55,7 @@ namespace PSXExport
                 fs.Write(
                     new UTF8Encoding(true)
                     .GetBytes(
-                        string.Format(fileFmt, nameCaps, w.tris.Count * 3,
+                        string.Format(srcFileFmt, nameCaps, w.tris.Count * 3,
                             vertStr, triStr)));
                 fs.Write(new UTF8Encoding(true).GetBytes("\r\n"));
             }
@@ -59,43 +64,29 @@ namespace PSXExport
         string CreateVertsString()
         {
             const string FMT = "  {{ {0,6}, {1,6}, {2,6}, 0 }}";
+            Func<Vertex, string> ApplyFmt =
+                v => String.Format(FMT, v.x, v.y, v.z);
 
             string str = "";
             for (int i = 0; i < _verts.Count - 1; i++)
-            {
-                Vertex v = _verts[i];
-                str +=
-                    string.Format(FMT + ",\n", v.x.value, v.y.value,
-                        v.z.value);
-            }
+                str += ApplyFmt(_verts[i]) + ",\n";
 
-            Vertex last = _verts[_verts.Count - 1];
-            return str +
-                string.Format(FMT, last.x.value, last.y.value, last.z.value);
+            return str + ApplyFmt(_verts[_verts.Count - 1]);
         }
 
         string CreateTrisStrings(string nameCaps)
         {
-            const string FMT = "  &{0}, &{1}, &{2}";
-            string VERTS_ARR_NAME =
-                string.Format("{0}_VERTS[{{0}}]", nameCaps);
+            string FMT =
+                string.Format("  &{0}_VERTS[{{0}}],&{0}_VERTS[{{1}}],"
+                    + "&{0}_VERTS[{{2}}]", nameCaps);
+            Func<Face, string> ApplyFmt =
+                t => string.Format(FMT, t.verts[0], t.verts[1], t.verts[2]);
 
             string str = "";
             for (int i = 0; i < _tris.Count - 1; i++)
-            {
-                Face t = _tris[i];
-                str += string.Format(FMT + ",\n",
-                    string.Format(VERTS_ARR_NAME, t.verts[0]),
-                    string.Format(VERTS_ARR_NAME, t.verts[1]),
-                    string.Format(VERTS_ARR_NAME, t.verts[2]));
-            }
+                str += ApplyFmt(_tris[i]) + "\n";
 
-            Face last = _tris[_tris.Count - 1];
-            return str +
-                string.Format(FMT,
-                    string.Format(VERTS_ARR_NAME, last.verts[0]),
-                    string.Format(VERTS_ARR_NAME, last.verts[1]),
-                    string.Format(VERTS_ARR_NAME, last.verts[2]));
+            return str + ApplyFmt(_tris[_tris.Count - 1]);
         }
     }
 }
