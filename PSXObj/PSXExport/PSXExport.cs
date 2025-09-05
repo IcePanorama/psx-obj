@@ -20,8 +20,8 @@ namespace PSXExport
         }
 
         /// Creates a MS-DOS/8.3 compliant filename from the given filename.
-        /// This base class does not add an extension, leaving that up to
-        /// subclasses.
+        /// This base class does not add an extension, leaving that up for
+        /// subclasses to implement.
         string CreateFilename(string filename)
         {
             int ext = filename.LastIndexOf('.');

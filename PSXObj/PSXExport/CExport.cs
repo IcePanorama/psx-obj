@@ -1,6 +1,7 @@
 using WavefrontObj;
 using System.Text;
 using System.IO;
+using System.Collections.Generic;
 using System;
 
 namespace PSXExport.CExport
@@ -34,10 +35,11 @@ namespace PSXExport.CExport
             #endif /* _PSXOBJ_{0}_DATA_H_ */
             """;
 
-        /// Format of the exported file. `{0}` should be the filename in all
+        /// Format of the exported C file. `{0}` should be the filename in all
         /// lowercase. `{1}` should the filename in all caps. `{2}` should be
-        /// a list of initializer for SVECTORs. `{3}` should be a list of
-        /// indicies of vertices contained within `{2}`.
+        /// a list of initializer for SVECTORs (See: `vertLineFmt`). `{3}`
+        /// should be a list of indicies to vertices contained within `{2}`
+        /// (See: `triLineFmtFmt`).
         static readonly string C_FILE_FMT = """
             /*
              * File generated using PSXObj.
@@ -54,6 +56,15 @@ namespace PSXExport.CExport
             {3}
             }};
             """;
+
+        /// How each line of the vertex array in the exported C file should be
+        /// formatted.
+        static readonly string vertLineFmt = "  {{ {0,6}, {1,6}, {2,6}, 0 }}";
+
+        /// `triLineFmt` without the vertex array name applied. That needs to
+        /// be done at run time. Yes, this is named in a confusing way. :^)
+        static readonly string triLineFmtFmt =
+            "  &{0}[{{0}}],&{0}[{{1}}],&{0}[{{2}}]";
 
         public CExport(WavefrontObjFile w) : base(w)
         {
@@ -72,50 +83,51 @@ namespace PSXExport.CExport
                 }
             }
 
+            string CreateListStr<T>(List<T> l, Func<T, string> fmtFunc)
+            {
+                string str = "";
+                for (int i = 0; i < l.Count - 1; i++)
+                    str += fmtFunc(l[i]) + ",\n";
+
+                return str + fmtFunc(l[l.Count - 1]);
+            }
+
+            // These are both needed in the next two inner funtions.
             string nameCaps = _filename.ToUpper();
             string vertArrName = nameCaps + "_VERTS";
-            string headerTxt =
-                string.Format(H_FILE_FMT, nameCaps, w.tris.Count * 3,
-                    vertArrName);
-            ExportFile(_filename + ".H", headerTxt);
 
-            string nameLower = _filename.ToLower();
-            string vertStr = CreateVertsString();
-            string triStr = CreateTrisStrings(vertArrName);
-            string srcTxt =
-                string.Format(C_FILE_FMT, nameLower, nameCaps, vertStr,
-                    triStr);
-            ExportFile(_filename + ".C", srcTxt);
-        }
+            /// Using this to clean up this ctor ever so slightly.
+            void ExportHeader()
+            {
+                string headerTxt =
+                    string.Format(H_FILE_FMT, nameCaps, w.tris.Count * 3,
+                        vertArrName);
+                ExportFile(_filename + ".H", headerTxt);
+            }
 
-        string CreateVertsString()
-        {
-            const string FMT = "  {{ {0,6}, {1,6}, {2,6}, 0 }}";
-            Func<Vertex, string> ApplyFmt =
-                v => String.Format(FMT, v.x, v.y, v.z);
+            /// Same as above, using this to clean up this ctor ever so
+            /// slightly.
+            void ExportSource()
+            {
+                Func<Vertex, string> vertFmtFn =
+                    v => String.Format(vertLineFmt, new Q3_12(v.x),
+                        new Q3_12(v.y), new Q3_12(v.z));
+                string vertStr = CreateListStr<Vertex>(_verts, vertFmtFn);
 
-            string str = "";
-            for (int i = 0; i < _verts.Count - 1; i++)
-                str += ApplyFmt(_verts[i]) + ",\n";
+                string triLineFmt = string.Format(triLineFmtFmt, vertArrName);
+                Func<Face, string> triFmtFn =
+                    t => string.Format(triLineFmt, t.verts[0], t.verts[1],
+                            t.verts[2]);
+                string triStr = CreateListStr<Face>(_tris, triFmtFn);
 
-            return str + ApplyFmt(_verts[_verts.Count - 1]);
-        }
+                string srcTxt =
+                    string.Format(C_FILE_FMT, _filename.ToLower(), nameCaps,
+                        vertStr, triStr);
+                ExportFile(_filename + ".C", srcTxt);
+            }
 
-        /// FIXME: With some effort, this could be combined with
-        /// `CreateVertsString`.
-        string CreateTrisStrings(string vertArrName)
-        {
-            string FMT =
-                string.Format("  &{0}[{{0}}],&{0}[{{1}}],&{0}[{{2}}]",
-                    vertArrName);
-            Func<Face, string> ApplyFmt =
-                t => string.Format(FMT, t.verts[0], t.verts[1], t.verts[2]);
-
-            string str = "";
-            for (int i = 0; i < _tris.Count - 1; i++)
-                str += ApplyFmt(_tris[i]) + ",\n";
-
-            return str + ApplyFmt(_tris[_tris.Count - 1]);
+            ExportHeader();
+            ExportSource();
         }
     }
 }

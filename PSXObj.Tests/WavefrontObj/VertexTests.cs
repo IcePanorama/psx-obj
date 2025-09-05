@@ -18,9 +18,9 @@ namespace PSXObj.Tests
                 Vertex(Convert.ToString(x), Convert.ToString(y),
                        Convert.ToString(z));
 
-            Assert.Equal((new Q3_12(x)).value, v.x.value);
-            Assert.Equal((new Q3_12(y)).value, v.y.value);
-            Assert.Equal((new Q3_12(z)).value, v.z.value);
+            Assert.Equal(x, v.x);
+            Assert.Equal(y, v.y);
+            Assert.Equal(z, v.z);
         }
     }
 }
