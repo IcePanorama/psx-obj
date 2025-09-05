@@ -92,42 +92,44 @@ namespace PSXExport.CExport
                 return str + fmtFunc(l[l.Count - 1]);
             }
 
-            // These are both needed in the next two inner funtions.
-            string nameCaps = _filename.ToUpper();
-            string vertArrName = nameCaps + "_VERTS";
-
             /// Using this to clean up this ctor ever so slightly.
-            void ExportHeader()
+            /// Param:  ncaps    The object name, in all caps.
+            /// Param:  arrName  The name of this objects's vertex array
+            void ExportHeader(string ncaps, string arrName)
             {
                 string headerTxt =
-                    string.Format(H_FILE_FMT, nameCaps, w.tris.Count * 3,
-                        vertArrName);
+                    string.Format(H_FILE_FMT, ncaps, w.tris.Count * 3,
+                        arrName);
                 ExportFile(_filename + ".H", headerTxt);
             }
 
             /// Same as above, using this to clean up this ctor ever so
             /// slightly.
-            void ExportSource()
+            /// Param:  ncaps    The object name, in all caps.
+            /// Param:  arrName  The name of this objects's vertex array
+            void ExportSource(string ncaps, string arrName)
             {
                 Func<Vertex, string> vertFmtFn =
                     v => String.Format(vertLineFmt, new Q3_12(v.x),
                         new Q3_12(v.y), new Q3_12(v.z));
                 string vertStr = CreateListStr<Vertex>(_verts, vertFmtFn);
 
-                string triLineFmt = string.Format(triLineFmtFmt, vertArrName);
+                string triLineFmt = string.Format(triLineFmtFmt, arrName);
                 Func<Face, string> triFmtFn =
                     t => string.Format(triLineFmt, t.verts[0], t.verts[1],
                             t.verts[2]);
                 string triStr = CreateListStr<Face>(_tris, triFmtFn);
 
                 string srcTxt =
-                    string.Format(C_FILE_FMT, _filename.ToLower(), nameCaps,
+                    string.Format(C_FILE_FMT, _filename.ToLower(), ncaps,
                         vertStr, triStr);
                 ExportFile(_filename + ".C", srcTxt);
             }
 
-            ExportHeader();
-            ExportSource();
+            string nameCaps = _filename.ToUpper();
+            string vertArrName = nameCaps + "_VERTS";
+            ExportHeader(nameCaps, vertArrName);
+            ExportSource(nameCaps, vertArrName);
         }
     }
 }
