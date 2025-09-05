@@ -3,7 +3,7 @@ using System.Text;
 using System.IO;
 using System;
 
-namespace PSXExport
+namespace PSXExport.CExport
 {
     /// Outputs a given Wavefront OBJ file as an ANSI-C compliant .C and .H
     /// file. Ideal for when you're still loading your homebrew project via

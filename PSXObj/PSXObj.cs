@@ -1,5 +1,5 @@
 using WavefrontObj;
-using PSXExport;
+using PSXExport.CExport;
 using System;
 
 class PSXObj
