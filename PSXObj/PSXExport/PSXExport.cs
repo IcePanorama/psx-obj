@@ -22,9 +22,7 @@ namespace PSXExport
                 return filename.Substring(0, ext).ToUpper();
             }
 
-            Console.WriteLine("Before: " + w.filePath);
             _filename = CreateFilename(w.filePath);
-            Console.WriteLine("After: " + _filename);
             _verts = w.verts;
             _tris = w.tris;
         }
