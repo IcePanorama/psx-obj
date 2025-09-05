@@ -24,5 +24,21 @@ public class Q3_12
         value = (short)(f * ONE);
     }
 
+    Q3_12(Q3_12 q)
+    {
+        value = q.value;
+    }
+
+    Q3_12(short v)
+    {
+        value = v;
+    }
+
+    public float ToFloat() => value / ONE;
     public override string ToString() => value.ToString();
+
+    public static Q3_12 operator -(Q3_12 op) => new Q3_12((short)(-op.value));
+    public static Q3_12 operator +(Q3_12 l, Q3_12 r)
+        => new Q3_12((short)(l.value + r.value));
+    public static Q3_12 operator -(Q3_12 l, Q3_12 r) => l + (-r);
 }

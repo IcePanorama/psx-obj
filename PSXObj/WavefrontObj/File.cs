@@ -33,10 +33,22 @@ namespace WavefrontObj
                             ApplicationException("Invalid vertex index: " + v);
                 }
 
-                Vertex a = verts[vals[0]], b = verts[vals[1]];
+                Vertex a = verts[vals[0]];
+                Vertex b = verts[vals[1]];
                 Vertex c = verts[vals[2]];
+
+                /*
                 Vector3 ab = new Vector3(b.x - a.x, b.y - a.y, b.z - a.z);
                 Vector3 ac = new Vector3(c.x - a.x, c.y - a.y, c.z - a.z);
+                */
+                Vector3 ab = new Vector3(
+                    (b.x - a.x).ToFloat(),
+                    (b.y - a.y).ToFloat(),
+                    (b.z - a.z).ToFloat());
+                Vector3 ac = new Vector3(
+                    (c.x - a.x).ToFloat(),
+                    (c.y - a.y).ToFloat(),
+                    (c.z - a.z).ToFloat());
                 Vector3 n = Vector3.Cross(ab, ac);
 
                 // Verts need to be clockwise from the viewpoint of the camera.
