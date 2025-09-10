@@ -70,8 +70,8 @@ namespace PSXExport.CExport
         {
             void ExportFile(string path, string output)
             {
-                // FIXME: Probably should throw an err here. Make a command
-                // line arg later to allow overwriting.
+                // FIXME: Probably should throw an err here.
+                // TODO: Make a command line arg later to allow overwriting.
                 if (File.Exists(path))
                     File.Delete(path);
 

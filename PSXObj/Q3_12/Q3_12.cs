@@ -1,18 +1,18 @@
 using System;
 using System.Runtime.CompilerServices;
 
+/// A signed, fixed point (Q3.12) decimal numeral. Has a valid range of -8 to
+/// 7.999755859375. Not doing any rounding, just cause.
 [assembly: InternalsVisibleTo("PSXObj.Tests")]
 public class Q3_12
 {
     static readonly int FRACTIONAL_BITS = 12;
-    static readonly int ONE = 1 << FRACTIONAL_BITS;
+    internal static readonly int ONE = 1 << FRACTIONAL_BITS;
     static readonly float MIN_SUPPORTED_VALUE = -8.0f;
     static readonly float MAX_SUPPORTED_VALUE = 7.999755859375f;
 
     public short value { get; private set; } = 0;
 
-    /// A signed, fixed point (Q3.12) decimal numeral. Has a valid range of -8
-    /// to 7.999755859375. Not doing any rounding, just cause.
     public Q3_12(float f)
     {
         if ((f < MIN_SUPPORTED_VALUE) || (MAX_SUPPORTED_VALUE < f))
@@ -37,6 +37,21 @@ public class Q3_12
     public float ToFloat() => value / ONE;
     public override string ToString() => value.ToString();
 
+    public override bool Equals(object? o)
+    {
+        if ((o == null) || (o is not Q3_12))
+            return false;
+
+        return this == (Q3_12)o;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode() ^ value.GetHashCode();
+    }
+
+    public static bool operator ==(Q3_12 l, Q3_12 r) => l.value == r.value;
+    public static bool operator !=(Q3_12 l, Q3_12 r) => !(l == r);
     public static Q3_12 operator -(Q3_12 op) => new Q3_12((short)(-op.value));
     public static Q3_12 operator +(Q3_12 l, Q3_12 r)
         => new Q3_12((short)(l.value + r.value));

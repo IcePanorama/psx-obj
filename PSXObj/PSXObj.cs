@@ -6,9 +6,15 @@ class PSXObj
 {
     public static void Main(string[] args)
     {
+        if (args.Length == 0)
+        {
+            Console.WriteLine("Improper usage.");
+            return;
+        }
+
         try
         {
-            WavefrontObjFile w = new WavefrontObjFile("meatball.obj");
+            WavefrontObjFile w = new WavefrontObjFile(args[0]);
             CExport he = new CExport(w);
         }
         catch (Exception e)

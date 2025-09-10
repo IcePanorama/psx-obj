@@ -2,6 +2,12 @@ namespace PSXObj.Tests
 {
     public class Q3_12Tests
     {
+        [Fact]
+        void Q3_12_OneEquals4096()
+        {
+            Assert.Equal(4096, Q3_12.ONE);
+        }
+
         [Theory]
         [InlineData(0.0f, 0)]
         [InlineData(1.0f, 4096)]
