@@ -37,23 +37,13 @@ namespace WavefrontObj
                 Vertex b = verts[vals[1]];
                 Vertex c = verts[vals[2]];
 
-                /*
                 Vector3 ab = new Vector3(b.x - a.x, b.y - a.y, b.z - a.z);
                 Vector3 ac = new Vector3(c.x - a.x, c.y - a.y, c.z - a.z);
-                */
-                Vector3 ab = new Vector3(
-                    (b.x - a.x).ToFloat(),
-                    (b.y - a.y).ToFloat(),
-                    (b.z - a.z).ToFloat());
-                Vector3 ac = new Vector3(
-                    (c.x - a.x).ToFloat(),
-                    (c.y - a.y).ToFloat(),
-                    (c.z - a.z).ToFloat());
-                Vector3 n = Vector3.Cross(ab, ac);
+                Vector3 crossProd = Vector3.Cross(ab, ac);
 
                 // Verts need to be clockwise from the viewpoint of the camera.
                 Vector3 viewDir = new Vector3(0, 0, -1);
-                bool isClkwise = Vector3.Dot(n, viewDir) > 0;
+                bool isClkwise = Vector3.Dot(crossProd, viewDir) > 0;
                 if (!isClkwise)
                 {
                     Console.WriteLine(

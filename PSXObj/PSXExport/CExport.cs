@@ -110,7 +110,7 @@ namespace PSXExport.CExport
             void ExportSource(string ncaps, string arrName)
             {
                 Func<Vertex, string> vertFmtFn =
-                    v => String.Format(vertLineFmt, v.x, v.y, v.z);
+                    v => String.Format(vertLineFmt, new Q3_12(v.x), new Q3_12(v.y), new Q3_12(v.z));
                 string vertStr = CreateListStr<Vertex>(_verts, vertFmtFn);
 
                 string triLineFmt = string.Format(triLineFmtFmt, arrName);
