@@ -4,24 +4,25 @@ using System;
 
 class PSXObj
 {
-    public static int Main(string[] args)
-    {
-        if (args.Length == 0)
+        public static int Main(string[] args)
         {
-            Console.WriteLine("Improper usage.");
-            return -1;
-        }
+                if (args.Length == 0)
+                {
+                        // TODO: add usage message.
+                        Console.WriteLine("Improper usage.");
+                        return -1;
+                }
 
-        try
-        {
-            new CExport(new WavefrontObjFile(args[0]));
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.ToString());
-            return -1;
-        }
+                try
+                {
+                        new CExport(new WavefrontObjFile(args[0]));
+                }
+                catch (Exception e)
+                {
+                        Console.WriteLine(e.ToString());
+                        return -1;
+                }
 
-        return 0;
-    }
+                return 0;
+        }
 }
