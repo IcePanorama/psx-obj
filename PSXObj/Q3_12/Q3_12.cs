@@ -34,7 +34,8 @@ public class Q3_12
         value = v;
     }
 
-    public float ToFloat() => value / ((float)ONE);
+    //public float ToFloat() => value / (ONE);
+    public float ToFloat() => value / (float)(ONE);
     public override string ToString() => value.ToString();
 
     public override bool Equals(object? o)

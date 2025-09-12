@@ -6,6 +6,7 @@ class PSXObj
 {
     public static void Main(string[] args)
     {
+        //Console.ReadLine();
         if (args.Length == 0)
         {
             Console.WriteLine("Improper usage.");
@@ -15,7 +16,7 @@ class PSXObj
         try
         {
             WavefrontObjFile w = new WavefrontObjFile(args[0]);
-            CExport he = new CExport(w);
+            CExport ce = new CExport(w);
         }
         catch (Exception e)
         {

@@ -16,40 +16,15 @@ namespace WavefrontObj
         {
             void processFaces(string v0, string v1, string v2)
             {
-                void Swap<T>(ref T x, ref T y)
-                {
-                    T tmp = x;
-                    x = y;
-                    y = tmp;
-                }
-
+                // Blender's default output isn't clockwise?
                 int[] vals =
-                { int.Parse(v0) - 1, int.Parse(v1) - 1, int.Parse(v2) - 1 };
+                { int.Parse(v2) - 1, int.Parse(v1) - 1, int.Parse(v0) - 1 };
 
                 foreach (int v in vals)
                 {
                     if ((v < 0) || (verts.Count < v))
                         throw new
                             ApplicationException("Invalid vertex index: " + v);
-                }
-
-                Vertex a = verts[vals[0]];
-                Vertex b = verts[vals[1]];
-                Vertex c = verts[vals[2]];
-
-                Vector3 ab = new Vector3(b.x - a.x, b.y - a.y, b.z - a.z);
-                Vector3 ac = new Vector3(c.x - a.x, c.y - a.y, c.z - a.z);
-                Vector3 crossProd = Vector3.Cross(ab, ac);
-
-                // Verts need to be clockwise from the viewpoint of the camera.
-                Vector3 viewDir = new Vector3(0, 0, -1);
-                bool isClkwise = Vector3.Dot(crossProd, viewDir) > 0;
-                if (!isClkwise)
-                {
-                    Console.WriteLine(
-                        "Vertices aren't in clockwise order: fixing them...");
-                    Swap<Vertex>(ref a, ref c);
-                    Swap<int>(ref vals[0], ref vals[2]);
                 }
 
                 tris.Add(new Face(vals[0], vals[1], vals[2]));

@@ -5,6 +5,9 @@
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>psx_obj</RootNamespace>
     <Nullable>enable</Nullable>
+    <DebugType>portable</DebugType>
+<DebugSymbols>true</DebugSymbols>
+<Optimize>false</Optimize>
   </PropertyGroup>
 
 </Project>
