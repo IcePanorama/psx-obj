@@ -87,7 +87,7 @@ namespace PSXExport.CExport
             {
                 string str = "";
                 for (int i = 0; i < l.Count - 1; i++)
-                    str += fmtFunc(l[i]) + ",\n\r";
+                    str += fmtFunc(l[i]) + ",\n";
 
                 return str + fmtFunc(l[l.Count - 1]);
             }
