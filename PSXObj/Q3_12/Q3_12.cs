@@ -6,10 +6,10 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("PSXObj.Tests")]
 public class Q3_12
 {
-    static readonly int FRACTIONAL_BITS = 12;
-    internal static readonly int ONE = 1 << FRACTIONAL_BITS;
-    static readonly float MIN_SUPPORTED_VALUE = -8.0f;
-    static readonly float MAX_SUPPORTED_VALUE = 7.999755859375f;
+    const int FRACTIONAL_BITS = 12;
+    internal const int ONE = 1 << FRACTIONAL_BITS;
+    const float MIN_SUPPORTED_VALUE = -8.0f;
+    const float MAX_SUPPORTED_VALUE = 7.999755859375f;
 
     public short value { get; private set; } = 0;
 
@@ -23,38 +23,4 @@ public class Q3_12
 
         value = (short)(f * ONE);
     }
-
-    Q3_12(Q3_12 q)
-    {
-        value = q.value;
-    }
-
-    Q3_12(short v)
-    {
-        value = v;
-    }
-
-    //public float ToFloat() => value / (ONE);
-    public float ToFloat() => value / (float)(ONE);
-    public override string ToString() => value.ToString();
-
-    public override bool Equals(object? o)
-    {
-        if ((o == null) || (o is not Q3_12))
-            return false;
-
-        return this == (Q3_12)o;
-    }
-
-    public override int GetHashCode()
-    {
-        return base.GetHashCode() ^ value.GetHashCode();
-    }
-
-    public static bool operator ==(Q3_12 l, Q3_12 r) => l.value == r.value;
-    public static bool operator !=(Q3_12 l, Q3_12 r) => !(l == r);
-    public static Q3_12 operator -(Q3_12 op) => new Q3_12((short)(-op.value));
-    public static Q3_12 operator +(Q3_12 l, Q3_12 r)
-        => new Q3_12((short)(l.value + r.value));
-    public static Q3_12 operator -(Q3_12 l, Q3_12 r) => l + (-r);
 }
