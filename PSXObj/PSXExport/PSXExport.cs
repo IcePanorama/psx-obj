@@ -18,8 +18,8 @@ namespace PSXExport
             string CreateFilename(string filename)
             {
                 int ext = filename.LastIndexOf('.');
-                ext = ext != -1 ? Math.Min(ext, 9) : filename.Length;
-                return filename.Substring(0, ext).ToUpper();
+                ext = ext != -1 ? Math.Min(ext, 5) : filename.Length;
+                return filename.Substring(0, ext).ToUpper() + "OBJ";
             }
 
             _filename = CreateFilename(w.filePath);
