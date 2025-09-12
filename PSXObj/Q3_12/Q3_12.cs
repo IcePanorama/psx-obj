@@ -23,4 +23,6 @@ public class Q3_12
 
         value = (short)(f * ONE);
     }
+
+    public override string ToString() => value.ToString();
 }
