@@ -87,7 +87,7 @@ namespace PSXExport.CExport
             {
                 string str = "";
                 for (int i = 0; i < l.Count - 1; i++)
-                    str += fmtFunc(l[i]) + ",\n";
+                    str += fmtFunc(l[i]) + ",\n\r";
 
                 return str + fmtFunc(l[l.Count - 1]);
             }
@@ -110,7 +110,6 @@ namespace PSXExport.CExport
             void ExportSource(string ncaps, string arrName)
             {
                 Func<Vertex, string> vertFmtFn =
-                    //v => String.Format(vertLineFmt, (v.x), (v.y), (v.z));
                     v => String.Format(vertLineFmt, new Q3_12(v.x), new Q3_12(v.y), new Q3_12(v.z));
                 string vertStr = CreateListStr<Vertex>(_verts, vertFmtFn);
 
