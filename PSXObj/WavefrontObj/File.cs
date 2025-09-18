@@ -49,7 +49,9 @@ namespace WavefrontObj
                 validateIndicies(tIdx, texCoords.Count,
                         "Invalid texture coordinate index: ");
 
-                tris.Add(new Face(vIdx[0], vIdx[1], vIdx[2]));
+                tris.Add(
+                   new Face(vIdx[0], vIdx[1], vIdx[2], tIdx[0], tIdx[1],
+                       tIdx[2]));
             }
 
             void processTexCoords(string tc0, string tc1)
