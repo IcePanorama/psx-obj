@@ -31,6 +31,7 @@ namespace PSXExport.CExport
             // Technically not necessary, but this makes me feel better. :^)
             extern const SVECTOR {2}[];
             extern const SVECTOR *{0}_TRIS[(_PSXOBJ_{0}_TOTAL_N_VERTS_)];
+            extern const char {0}_TCOORDS[(_PSXOBJ_{0}_TOTAL_N_VERTS_)][2];
 
             #endif /* _PSXOBJ_{0}_DATA_H_ */
             """;
@@ -55,16 +56,25 @@ namespace PSXExport.CExport
             const SVECTOR *{1}_TRIS[(_PSXOBJ_{1}_TOTAL_N_VERTS_)] = {{
             {3}
             }};
+
+            const unsigned char {1}_TCOORDS[(_PSXOBJ_{1}_TOTAL_N_VERTS_)][2] =
+            {{
+            {4}
+            }};
             """;
 
         /// How each line of the vertex array in the exported C file should be
         /// formatted.
-        static readonly string vertLineFmt = "  {{ {0,6}, {1,6}, {2,6}, 0 }}";
+        static readonly string vertLineFmt =
+            "  {{ 0x{0:X04}, 0x{1:X04}, 0x{2:X04}, 0 }}";
 
         /// `triLineFmt` without the vertex array name applied. That needs to
         /// be done at run time. Yes, this is named in a confusing way. :^)
         static readonly string triLineFmtFmt =
             "  &{0}[{{0}}],&{0}[{{1}}],&{0}[{{2}}]";
+
+        static readonly string tCoordsLineFmt =
+            "  {{ 0x{0:X02}, 0x{1:X02} }},{{ 0x{2:X02}, 0x{3:X02} }},{{ 0x{4:X02}, 0x{5:X02} }}";
 
         public CExport(WavefrontObjFile w) : base(w)
         {
@@ -110,8 +120,9 @@ namespace PSXExport.CExport
             void ExportSource(string ncaps, string arrName)
             {
                 Func<Vertex, string> vertFmtFn =
-                    v => String.Format(vertLineFmt, new Q3_12(v.x),
-                                new Q3_12(v.y), new Q3_12(v.z));
+                    v => String.Format(vertLineFmt, (new Q3_12(v.x)).value,
+                                (new Q3_12(v.y)).value,
+                                (new Q3_12(v.z)).value);
                 string vertStr = CreateListStr<Vertex>(_verts, vertFmtFn);
 
                 string triLineFmt = string.Format(triLineFmtFmt, arrName);
@@ -120,9 +131,22 @@ namespace PSXExport.CExport
                             t.verts[2]);
                 string triStr = CreateListStr<Face>(_tris, triFmtFn);
 
+                Func<int[], string> tCoordsFmtFnt =
+                    t => String.Format(tCoordsLineFmt, _tCoords[t[0]][0],
+                        _tCoords[t[0]][1], _tCoords[t[1]][0],
+                        _tCoords[t[1]][1], _tCoords[t[2]][0],
+                        _tCoords[t[2]][1]);
+
+                string tCoordsStr = "";
+                for (int i = 0; i < _tris.Count - 1; i++)
+                {
+                    tCoordsStr += tCoordsFmtFnt(_tris[i].tCoords) + ",\n";
+                }
+                tCoordsStr += tCoordsFmtFnt(_tris[_tris.Count - 1].tCoords);
+
                 string srcTxt =
                     string.Format(C_FILE_FMT, _filename.ToLower(), ncaps,
-                        vertStr, triStr);
+                        vertStr, triStr, tCoordsStr);
                 ExportFile(_filename + ".C", srcTxt);
             }
 

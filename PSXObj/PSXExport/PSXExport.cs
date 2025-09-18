@@ -9,6 +9,7 @@ namespace PSXExport
         protected string _filename;
         protected List<Vertex> _verts;
         protected List<Face> _tris;
+        protected List<int[]> _tCoords;
 
         protected PSXExport(WavefrontObjFile w)
         {
@@ -25,6 +26,7 @@ namespace PSXExport
             _filename = CreateFilename(w.filePath);
             _verts = w.verts;
             _tris = w.tris;
+            _tCoords = w.tCoords;
         }
     }
 }

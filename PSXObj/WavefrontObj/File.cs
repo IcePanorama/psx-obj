@@ -14,7 +14,7 @@ namespace WavefrontObj
         string? objName = null;
         public List<Vertex> verts { get; private set; } = new List<Vertex>();
         public List<Face> tris { get; private set; } = new List<Face>();
-        public List<int[]> texCoords { get; private set; } = new List<int[]>();
+        public List<int[]> tCoords { get; private set; } = new List<int[]>();
 
         public WavefrontObjFile(string path)
         {
@@ -32,6 +32,7 @@ namespace WavefrontObj
                 string[][] subs =
                         { v0.Split('/'), v1.Split('/'), v2.Split('/') };
 
+                // TODO: make this flexible to handle files w/ or w/o tCoords
                 // Blender's default output is counterclockwise (b/c OpenGL)
                 int[] vIdx = {
                     int.Parse(subs[2][0]) - 1,
@@ -46,7 +47,7 @@ namespace WavefrontObj
                 };
 
                 validateIndicies(vIdx, verts.Count, "Invalid vertex index: ");
-                validateIndicies(tIdx, texCoords.Count,
+                validateIndicies(tIdx, tCoords.Count,
                         "Invalid texture coordinate index: ");
 
                 tris.Add(
@@ -57,7 +58,7 @@ namespace WavefrontObj
             void processTexCoords(string tc0, string tc1)
             {
                 Func<string, int> convert = s => (int)(float.Parse(s) * 255);
-                texCoords.Add(new int[]{ convert(tc0), convert(tc1) });
+                tCoords.Add(new int[]{ convert(tc0), convert(tc1) });
             }
 
             void ProcessFile(StreamReader sr)
