@@ -57,7 +57,7 @@ namespace PSXExport.CExport
             {3}
             }};
 
-            const unsigned char {1}_TCOORDS[(_PSXOBJ_{1}_TOTAL_N_VERTS_)][2] =
+            const char {1}_TCOORDS[(_PSXOBJ_{1}_TOTAL_N_VERTS_)][2] =
             {{
             {4}
             }};
@@ -66,7 +66,7 @@ namespace PSXExport.CExport
         /// How each line of the vertex array in the exported C file should be
         /// formatted.
         static readonly string vertLineFmt =
-            "  {{ 0x{0:X04}, 0x{1:X04}, 0x{2:X04}, 0 }}";
+            "  {{ {0,6}, {1,6}, {2,6}, 0 }}";
 
         /// `triLineFmt` without the vertex array name applied. That needs to
         /// be done at run time. Yes, this is named in a confusing way. :^)
